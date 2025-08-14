@@ -1,0 +1,22 @@
+import { ObjectType, Field, ID, GraphQLISODateTime } from "@nestjs/graphql";
+
+@ObjectType()
+export class User {
+  @Field(() => ID)
+  id: string;
+
+  @Field()
+  name: string;
+
+  @Field()
+  email: string;  
+
+  @Field(() => GraphQLISODateTime)
+  createdAt: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  updatedAt?: Date;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  deletedAt?: Date | null;
+}
