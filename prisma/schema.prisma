@@ -12,8 +12,29 @@ model User {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
-  password  String
+  phone     String   @unique
+  password  String?
+  isVerified Boolean  @default(false)
+  isActive  Boolean  @default(true)
+  role      String   @default("USER")
+  provider  String   @default("LOCAL")
+  providerId String?
+  image     String?
+  refreshToken         String?
+
+
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
+}
+
+model Otp {
+  id        String   @id @default(uuid())
+  email     String?
+  phone     String?
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }

@@ -9,6 +9,9 @@ export class User {
   name: string;
 
   @Field()
+  phone: string;
+
+  @Field()
   email: string;  
 
   @Field(() => GraphQLISODateTime)

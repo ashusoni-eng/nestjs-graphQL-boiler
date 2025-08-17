@@ -7,10 +7,20 @@ type AuthResponse {
   user: User!
 }
 
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+type ChangePasswordResponse {
+  message: String!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
   password: String!
+  phone: String!
 }
 
 """
@@ -18,32 +28,97 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+input ForgetPasswordInput {
+  email: String
+  phone: String
+}
+
+type ForgetPasswordResponse {
+  message: String!
+  otp: String
+}
+
 input LoginInput {
   email: String!
   password: String!
 }
 
 type Mutation {
-  deleteUser(id: String!): User!
+  changePassword(input: ChangePasswordInput!): ChangePasswordResponse!
+  createUser(createUserInput: CreateUserInput!): User!
+  forgetPassword(input: ForgetPasswordInput!): ForgetPasswordResponse!
   login(input: LoginInput!): AuthResponse!
+  refreshTokens(input: RefreshTokenInput!): RefreshTokenResponse!
   register(input: RegisterInput!): AuthResponse!
-  registerUser(input: CreateUserInput!): User!
-  updateUser(id: String!, input: UpdateUserInput!): User!
+  removeUser(id: String!): User!
+  resendOtp(input: ResendOtpInput!): ResendOtpResponse!
+  resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
+  socialLogin(input: SocialLoginInput!): SocialLoginResponse!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  verifyOtp(input: VerifyOtpInput!): VerifyOtpResponse!
 }
 
 type Query {
-  findAllUsers: [User!]!
+  user(id: String!): User!
+  users(page: String!, perPage: String!): [User!]!
+}
+
+input RefreshTokenInput {
+  refreshToken: String!
+}
+
+type RefreshTokenResponse {
+  accessToken: String!
+  refreshToken: String!
 }
 
 input RegisterInput {
   email: String!
   name: String!
   password: String!
+  phone: String!
+}
+
+input ResendOtpInput {
+  email: String!
+}
+
+type ResendOtpResponse {
+  message: String!
+  otp: String
+  otpExpire: DateTime
+}
+
+input ResetPasswordInput {
+  email: String
+  newPassword: String!
+  otp: String!
+  phone: String
+}
+
+type ResetPasswordResponse {
+  message: String!
+}
+
+input SocialLoginInput {
+  email: String!
+  fullName: String!
+  profilePic: String
+  provider: String!
+  providerId: String!
+}
+
+type SocialLoginResponse {
+  accessToken: String!
+  user: User!
 }
 
 input UpdateUserInput {
   email: String
+  id: String!
   name: String
+  password: String
+  phone: String
 }
 
 type User {
@@ -53,4 +128,14 @@ type User {
   id: ID!
   name: String!
   updatedAt: DateTime
+}
+
+input VerifyOtpInput {
+  email: String
+  otp: String!
+  phone: String
+}
+
+type VerifyOtpResponse {
+  message: String!
 }
