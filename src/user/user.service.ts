@@ -14,6 +14,7 @@ import * as argon2 from "argon2";
 import { SocialUser } from "src/common/types/common";
 import { SocialLoginInput } from "src/auth/dto/social-login.input";
 import { formatPaginatedResponse } from "src/common/pagination/pagination.utils";
+import { UpdateProfileInput } from "./dto/update-profile.input";
 
 @Injectable()
 export class UserService {
@@ -134,7 +135,7 @@ export class UserService {
     });
   }
 
-  async update(id: string, updateUserInput: UpdateUserInput) {
+  async update(id: string, updateUserInput: UpdateProfileInput) {
     await this.findOne(id);
 
     if (updateUserInput.email) {

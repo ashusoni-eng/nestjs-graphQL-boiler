@@ -2,11 +2,7 @@ import { Field, InputType } from "@nestjs/graphql";
 import { IsEmail, Matches } from "class-validator";
 
 @InputType()
-export class UpdateUserInput {
-
-  @Field()
-  id: string;
-
+export class UpdateProfileInput {  
   @Field({ nullable: true })
   @Matches(/^[a-zA-Z\s]+$/, { message: "Name must contain only letters and spaces" })
   @Field({ nullable: true })

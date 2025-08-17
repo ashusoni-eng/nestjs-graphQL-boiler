@@ -14,6 +14,9 @@ export class User {
   @Field()
   email: string;  
 
+  @Field({ nullable: true })
+  image?: string;
+
   @Field(() => GraphQLISODateTime)
   createdAt: Date;
 

@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver, ObjectType, Field } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { RegisterInput } from './dto/register.input';
 import { LoginInput } from './dto/login.input';
@@ -13,54 +13,13 @@ import { SocialLoginInput } from './dto/social-login.input';
 import { User } from '../user/entities/user.entity';
 import { CurrentUser } from './decorator/current-user.decorator';
 import { Public } from './decorator/public.decorator';
-
-@ObjectType()
-class ForgetPasswordResponse {
-  @Field()
-  message: string;
-
-  @Field({ nullable: true })
-  otp?: string;
-}
-
-@ObjectType()
-class ResetPasswordResponse {
-  @Field()
-  message: string;
-}
-
-@ObjectType()
-class ResendOtpResponse {
-  @Field()
-  message: string;
-  @Field({nullable: true})
-  otp: string;
-  @Field(()=>Date, {nullable: true})
-  otpExpire: Date;
-}
-
-@ObjectType()
-class RefreshTokenResponse {
-  @Field()
-  accessToken: string;
-  @Field()
-  refreshToken: string;
-}
-
-@ObjectType()
-class VerifyOtpResponse {
-  @Field()
-  message: string;
-}
-
-@ObjectType()
-class ChangePasswordResponse {
-  @Field()
-  message: string;
-}
-
-@ObjectType()
-class SocialLoginResponse extends AuthResponse {}
+import { ForgetPasswordResponse } from './models/forget-password-response.model';
+import { ResetPasswordResponse } from './models/reset-password-response.model';
+import { ResendOtpResponse } from './models/resend-otp-response.model';
+import { RefreshTokenResponse } from './models/refresh-token-response.model';
+import { VerifyOtpResponse } from './models/verify-otp-response.model';
+import { ChangePasswordResponse } from './models/change-password-response.model';
+import { SocialLoginResponse } from './models/social-login-response.model';
 
 @Resolver()
 export class AuthResolver {
