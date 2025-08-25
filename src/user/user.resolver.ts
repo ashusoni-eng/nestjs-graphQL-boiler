@@ -11,6 +11,9 @@ import { createWriteStream } from "fs";
 import { FileUpload, GraphQLUpload } from "graphql-upload-ts";
 import { CurrentUser } from "src/auth/decorator/current-user.decorator";
 import { UpdateProfileInput } from "./dto/update-profile.input";
+import { Roles } from "src/auth/decorator/roles.decorator";
+import { RolesGuard } from "src/auth/guards/roles.guard";
+import { Role } from "@prisma/client";
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => User)
@@ -23,6 +26,8 @@ export class UserResolver {
   }
 
   @Query(() => PaginatedUsers, { name: "users" })
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
   findAll(@Args("page") page: string, @Args("perPage") perPage: string) {
     const pageNumber = parseInt(page, 10) || 1;
     const perPageNumber = parseInt(perPage, 10) || 10;
@@ -57,6 +62,11 @@ export class UserResolver {
   @Mutation(() => User)
   removeUser(@Args("id", { type: () => String }) id: string) {
     return this.userService.remove(id);
+  }
+
+  @Mutation(() => User)
+  changeUserStatus(@Args("id", { type: () => String }) id: string) {
+    return this.userService.changeStatus(id);
   }
 
   @Mutation(() => User)

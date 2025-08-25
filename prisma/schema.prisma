@@ -7,25 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  phone     String   @unique
-  password  String?
-  isVerified Boolean  @default(false)
-  isActive  Boolean  @default(true)
-  role      String   @default("USER")
-  provider  String   @default("LOCAL")
-  providerId String?
-  image     String?
-  refreshToken         String?
+  id           String  @id @default(uuid())
+  name         String
+  email        String  @unique
+  phone        String  @unique
+  password     String?
+  isVerified   Boolean @default(false)
+  isActive     Boolean @default(true)
+  role         Role    @default(USER)
+  provider     String  @default("LOCAL")
+  providerId   String?
+  image        String?
+  refreshToken String?
 
-
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 }
 

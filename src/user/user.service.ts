@@ -50,6 +50,7 @@ export class UserService {
     });
   }
 
+  
    async findAll(page: number, perPage: number) {
     try {
       const { skip, take } = getPaginationOptions({ page, perPage });
@@ -243,6 +244,22 @@ export class UserService {
         providerId: socialUser.providerId,
         isVerified: true,                
       },
+    });
+  }
+
+  async changeStatus(id: string) {
+    const user=  await this.findOne(id);
+    if(!user) {
+      throw new NotFoundException(`User not found`);
+    }
+
+    const data = {
+      isActive: !user.isActive,
+    };  
+
+    return this.prisma.user.update({
+      where: { id },
+      data,
     });
   }
 }

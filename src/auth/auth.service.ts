@@ -102,7 +102,7 @@ export class AuthService {
   }
 
   async login(user: User, otp?: string) {
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id, user.email, user.role);
     await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
 
     return {
@@ -191,7 +191,7 @@ export class AuthService {
       html
     );
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id, user.email, user.role);
     await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
 
     return {
@@ -234,6 +234,7 @@ export class AuthService {
       const tokens = await this.getTokens(
         user.id,
         user.email,
+        user.role
       );
       await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
 
@@ -246,12 +247,14 @@ export class AuthService {
   private async getTokens(
     userId: string,
     email: string,
+    role: string,
   ) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
           email,
+          role,
         },
         {
           secret: this.configService.get<string>("JWT_SECRET"),
@@ -262,6 +265,7 @@ export class AuthService {
         {
           sub: userId,
           email,
+          role,
         },
         {
           secret: this.configService.get<string>("JWT_REFRESH_SECRET"),
@@ -495,7 +499,7 @@ export class AuthService {
       user = await this.userService.createSocialUser(socialUser);
     }
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user.id, user.email, user.role);
     await this.userService.updateRefreshToken(user.id, tokens.refreshToken);
 
     return {
